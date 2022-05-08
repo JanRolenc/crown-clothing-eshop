@@ -1,0 +1,36 @@
+.form-group {
+    display: flex;
+    flex-direction: row;
+    .sign-in {
+        width: 50%;
+        margin: 10px;
+        display: flex;
+        flex-direction: column;
+        .w3-container {
+            width: 80%;
+            padding: 10px;
+            margin: 10px;
+            display: flex;
+            flex-direction: column;
+            button {
+                margin-top: 20px;
+            }
+        }
+    }
+    .register {
+        margin: 10px;
+        width: 50%;
+        display: flex;
+        flex-direction: column;
+        .w3-container {
+            margin: 10px;
+            padding: 10px;
+            width: 80%;
+            display: flex;
+            flex-direction: column;
+            button {
+                margin-top: 20px;
+            }
+        }
+    }
+}
