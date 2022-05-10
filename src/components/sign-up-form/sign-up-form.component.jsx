@@ -1,6 +1,8 @@
 import "./sign-up-form.style.scss";
 import { useState } from "react";
 import { createAuthUserWithEmailAndPassword, createUserDocumentFromAuth } from "../../utils/firebase/firebase.utils"
+import FormInput from "../form-input/form-input.component";
+import Button from "../button/button.component";
 
 const defaultFormFields = {
     displayName: "",
@@ -39,75 +41,52 @@ const SignUpForm = () => {
                 alert("Cannot create user, email already in use")
                 console.log('error code:', error.code)
             }
-
             else {
                 console.log('user creation encountered an error')
                 console.log('error code:', error.code)
-
             }
         }
     }
     return (
-        <div className="form-group">
-            <div className="sign-in">
-                <h1>Sign un with your email and password</h1>
-                <form onSubmit={handleSubmit} className="w3-container">
-
-                    <label>Display Name</label>
-                    <input
-                        required
-                        className="w3-input"
-                        type="text"
-                        name="displayName"
-                        value={displayName}
-                        onChange={handleChange}
-                    />
-                    <label>Email</label>
-                    <input
-                        required
-                        className="w3-input"
-                        type="email"
-                        name="email"
-                        value={email}
-                        onChange={handleChange}
-                    />
-                    <label>Password</label>
-                    <input
-                        required
-                        className="w3-input"
-                        type="password"
-                        name="password"
-                        value={password}
-                        onChange={handleChange}
-                    />
-                    <label>Confirm Password</label>
-                    <input
-                        required
-                        className="w3-input"
-                        type="password"
-                        name="confirmPassword"
-                        value={confirmPassword}
-                        onChange={handleChange}
-                    />
-                    <button type="submit">Sign Up</button>
-
-                </form>
-            </div>
-            {/* <div className="register">
-                <h1>Register</h1>
-                <form class="w3-container">
-
-                    <label>First Name</label>
-                    <input class="w3-input" type="text" />
-
-                    <label>Last Name</label>
-                    <input class="w3-input" type="text" />
-                    <label>Email</label>
-                    <input class="w3-input" type="email" />
-                    <button>Register</button>
-
-                </form>
-            </div> */}
+        // <div className="">
+        <div className="sign-up-form">
+            <h2>Don't have an account?</h2>
+            <span>Sign un with your email and password</span>
+            <form onSubmit={handleSubmit} className="">
+                <FormInput
+                    label="Display name"
+                    required
+                    type="text"
+                    name="displayName"
+                    value={displayName}
+                    onChange={handleChange}
+                />
+                <FormInput
+                    label="Email"
+                    required
+                    type="email"
+                    name="email"
+                    value={email}
+                    onChange={handleChange}
+                />
+                <FormInput
+                    label="Password"
+                    required
+                    type="password"
+                    name="password"
+                    value={password}
+                    onChange={handleChange}
+                />
+                <FormInput
+                    label="Confirm Password"
+                    required
+                    type="password"
+                    name="confirmPassword"
+                    value={confirmPassword}
+                    onChange={handleChange}
+                />
+                <Button type="submit">Sign Up</Button>
+            </form>
         </div>
     )
 }
