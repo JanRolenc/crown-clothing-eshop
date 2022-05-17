@@ -1,21 +1,18 @@
-import { useState } from "react"
-import shopData from "../../shop-data/shop-data.json"
+import { useState, useContext } from "react"
+import { ProductsContext } from "../../contexts/products.context"
+import ProductCard from "../../components/product-card/product-card.component"
+import "./shop.style.scss"
 
 const Shop = () => {
-    const [hats, setHats] = useState(shopData)
-    console.log(hats)
+    const { products } = useContext(ProductsContext)
     return (
-        <div>
-            <h1>SHOP PAGE</h1>
-            {hats.map((hat) => {
-                <div>
-                    <h2>{hat.name}</h2>
-                </div>
-
-            })}
+        <div className="products-container">
+            {products.map((product) => (
+                <ProductCard key={product.id} product={product} />
+            ))}
         </div>
-
     )
 }
 
 export default Shop;
+
