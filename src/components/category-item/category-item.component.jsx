@@ -1,4 +1,5 @@
 import "./category-item.style.scss";
+// import { CartContext } from "../../contexts/cart.context";
 
 const CategoryItem = ({ category }) => {
   return (
