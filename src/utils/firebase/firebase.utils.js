@@ -14,7 +14,7 @@ import {
     onAuthStateChanged
 } from "firebase/auth";
 
-import { getFirestore, doc, getDoc, setDoc } from "firebase/firestore"
+import { getFirestore, doc, getDoc, setDoc, collection, writeBatch } from "firebase/firestore"
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -38,6 +38,11 @@ export const signInWithGooglePopup = () => signInWithPopup(auth, googleProvider)
 export const signInWithGoogleRedirect = () => signInWithRedirect(auth, googleProvider);
 
 export const db = getFirestore();
+
+export const addCollectionAndDocuments = async(collectionKey, objetsToAdd) => {
+    const collectionRef = (db, collectionKey);
+}
+
 export const createUserDocumentFromAuth = async(userAuth, additionalInformation = {}) => { //viz video Sign Up with email and password, 6.min 
     if (!userAuth) return;
     const userDocRef = doc(db, 'users', userAuth.uid) //pouze reference na misto v databazi
