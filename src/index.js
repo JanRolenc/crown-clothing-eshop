@@ -1,27 +1,37 @@
-import React from 'react';
-import { render } from 'react-dom';
-import { BrowserRouter } from 'react-router-dom';
+// Before
+// import { render } from 'react-dom';
+// const container = document.getElementById('app');
+// render(<App tab="home" />, container);
 
-import App from './App';
-import { UserProvider } from './contexts/user.context';
-import { ProductsProvider } from './contexts/products.context';
-import { CartProvider } from './contexts/cart.context';
+// After
+import { createRoot } from "react-dom/client";
 
-import './index.scss';
+import React from "react";
+// import { render } from "react-dom";
+import { BrowserRouter } from "react-router-dom";
+import App from "./App";
+import { UserProvider } from "./contexts/user.context";
+import { CategoriesProvider } from "./contexts/categories.context";
+import { CartProvider } from "./contexts/cart.context";
 
-const rootElement = document.getElementById('root');
+import "./index.scss";
+const rootElement = document.getElementById("root");
+// const container = document.getElementById("app");
+const root = createRoot(rootElement); // createRoot(container!) if you use TypeScript
+// root.render(<App tab="home" />);
 
-render(
+root.render(
   <React.StrictMode>
     <BrowserRouter>
       <UserProvider>
-        <ProductsProvider>
+        <CategoriesProvider>
           <CartProvider>
             <App />
           </CartProvider>
-        </ProductsProvider>
+        </CategoriesProvider>
       </UserProvider>
     </BrowserRouter>
-  </React.StrictMode>,
-  rootElement
+  </React.StrictMode>
+  // ,
+  // rootElement
 );

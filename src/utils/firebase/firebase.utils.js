@@ -1,80 +1,125 @@
-// Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
 import {
-    getAuth,
-    signInWithRedirect,
-    signInWithPopup,
-    GoogleAuthProvider,
-    createUserWithEmailAndPassword,
-    signInWithEmailAndPassword,
-    signOut,
-    onAuthStateChanged
+  getAuth,
+  signInWithRedirect,
+  signInWithPopup,
+  GoogleAuthProvider,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signOut,
+  onAuthStateChanged,
 } from "firebase/auth";
+import {
+  getFirestore,
+  doc,
+  getDoc,
+  setDoc,
+  collection,
+  writeBatch,
+  query,
+  getDocs,
+} from "firebase/firestore";
 
-import { getFirestore, doc, getDoc, setDoc, collection, writeBatch } from "firebase/firestore"
-
-// Your web app's Firebase configuration
 const firebaseConfig = {
-    apiKey: "AIzaSyAC9IzNYFL5-LQi1p8U504Ao6vewZX6r8k",
-    authDomain: "crown-clothing-eshop.firebaseapp.com",
-    projectId: "crown-clothing-eshop",
-    storageBucket: "crown-clothing-eshop.appspot.com",
-    messagingSenderId: "82806236453",
-    appId: "1:82806236453:web:04b9de83ba6ea75b18a6cc",
+  apiKey: "AIzaSyAC9IzNYFL5-LQi1p8U504Ao6vewZX6r8k",
+  authDomain: "crown-clothing-eshop.firebaseapp.com",
+  projectId: "crown-clothing-eshop",
+  storageBucket: "crown-clothing-eshop.appspot.com",
+  messagingSenderId: "82806236453",
+  appId: "1:82806236453:web:04b9de83ba6ea75b18a6cc",
 };
 
-// Initialize Firebase
 const firebaseApp = initializeApp(firebaseConfig);
+
 const googleProvider = new GoogleAuthProvider();
+
 googleProvider.setCustomParameters({
-    promt: "select-account",
+  prompt: "select_account",
 });
 
 export const auth = getAuth();
-export const signInWithGooglePopup = () => signInWithPopup(auth, googleProvider);
-export const signInWithGoogleRedirect = () => signInWithRedirect(auth, googleProvider);
+export const signInWithGooglePopup = () =>
+  signInWithPopup(auth, googleProvider);
+export const signInWithGoogleRedirect = () =>
+  signInWithRedirect(auth, googleProvider);
 
 export const db = getFirestore();
 
-export const addCollectionAndDocuments = async(collectionKey, objetsToAdd) => {
-    const collectionRef = (db, collectionKey);
-}
+//pro nahrani/upload dat z local do firebase; viz categories.context.jsx
+export const addCollectionAndDocuments = async (
+  collectionKey,
+  objectsToAdd
+  //field = 'title'
+) => {
+  const collectionRef = collection(db, collectionKey);
+  const batch = writeBatch(db);
 
-export const createUserDocumentFromAuth = async(userAuth, additionalInformation = {}) => { //viz video Sign Up with email and password, 6.min 
-    if (!userAuth) return;
-    const userDocRef = doc(db, 'users', userAuth.uid) //pouze reference na misto v databazi
-    console.log(userDocRef);
+  objectsToAdd.forEach((object) => {
+    const docRef = doc(collectionRef, object.title.toLowerCase());
+    // const docRef = doc(collectionRef, object[field].toLowerCase());//alternativa - vice obecne
+    batch.set(docRef, object);
+  });
 
-    const userSnapShot = await getDoc(userDocRef) //tady uz se ptame na skutecna data v referenci
-    console.log(userSnapShot);
-    console.log(userSnapShot.exists()); //vyhodi false, pokud nemame v databazi zaznam
+  await batch.commit();
+  console.log("done");
+};
+//pro nahrani/download dat z firebase do webu; viz categories.context.jsx
+export const getCategoriesAndDocuments = async () => {
+  const collectionRef = collection(db, "categories");
+  const q = query(collectionRef);
 
-    if (!userSnapShot.exists()) { //pokud user existuje, podminka bude !true, tedy false a nic se zakladat nebude
-        const { displayName, email } = userAuth;
-        const createdAt = new Date();
-        try {
-            await setDoc(userDocRef, { displayName, email, createdAt, ...additionalInformation })
-        } catch (error) {
-            console.log("error creating the user", error.message)
+  const querySnapshot = await getDocs(q);
+  const categoryMap = querySnapshot.docs.reduce((acc, docSnapshot) => {
+    const { title, items } = docSnapshot.data();
+    acc[title.toLowerCase()] = items;
+    return acc;
+  }, {});
 
-        }
+  return categoryMap;
+};
+
+export const createUserDocumentFromAuth = async (
+  userAuth,
+  additionalInformation = {}
+) => {
+  if (!userAuth) return;
+
+  const userDocRef = doc(db, "users", userAuth.uid);
+
+  const userSnapshot = await getDoc(userDocRef);
+
+  if (!userSnapshot.exists()) {
+    const { displayName, email } = userAuth;
+    const createdAt = new Date();
+
+    try {
+      await setDoc(userDocRef, {
+        displayName,
+        email,
+        createdAt,
+        ...additionalInformation,
+      });
+    } catch (error) {
+      console.log("error creating the user", error.message);
     }
-    return userDocRef;
-}
+  }
 
-export const createAuthUserWithEmailAndPassword = async(email, password) => {
-    if (!email || !password) return;
+  return userDocRef;
+};
 
-    return await createUserWithEmailAndPassword(auth, email, password)
-}
-export const signInAuthUserWithEmailAndPassword = async(email, password) => {
-    if (!email || !password) return;
+export const createAuthUserWithEmailAndPassword = async (email, password) => {
+  if (!email || !password) return;
 
-    return await signInWithEmailAndPassword(auth, email, password)
-}
-export const signOutUser = async() => await signOut(auth);
+  return await createUserWithEmailAndPassword(auth, email, password);
+};
 
-export const onAuthStateChangedListener = (callback) => onAuthStateChanged(auth, callback)
+export const signInAuthUserWithEmailAndPassword = async (email, password) => {
+  if (!email || !password) return;
+
+  return await signInWithEmailAndPassword(auth, email, password);
+};
+
+export const signOutUser = async () => await signOut(auth);
+
+export const onAuthStateChangedListener = (callback) =>
+  onAuthStateChanged(auth, callback);
