@@ -10,6 +10,13 @@ import {
 
 import './sign-in-form.style.scss';
 
+import {
+    signInAuthUserWithEmailAndPassword,
+    signInWithGooglePopup,
+} from "../../utils/firebase/firebase.utils";
+
+import "./sign-in-form.style.scss";
+
 const defaultFormFields = {
     email: '',
     password: '',

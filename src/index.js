@@ -34,4 +34,8 @@ root.render(
   </React.StrictMode>
   // ,
   // rootElement
+<<<<<<< HEAD
 );
+=======
+);
+>>>>>>> f0fcc28b73226af633c2b3d0ba9ca29be052ae5f
