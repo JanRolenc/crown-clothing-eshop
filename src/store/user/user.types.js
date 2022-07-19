@@ -1,3 +1,7 @@
 export const USER_ACTION_TYPES = {
+<<<<<<< HEAD
     SET_CURRENT_USER: "user/SET_CURRENT_USER",
+=======
+    SET_CURRENT_USER: "SET_CURRENT_USER",
+>>>>>>> a9b4966461f58fdaf301c4ec7165a40d7152cf92
 }

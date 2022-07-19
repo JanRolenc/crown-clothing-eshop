@@ -10,7 +10,12 @@ const INITIAL_STATE = {
 }
 
 export const userReducer = (state = INITIAL_STATE, action) => {
+<<<<<<< HEAD
 
+=======
+    console.log('dispatched')
+    console.log(action)
+>>>>>>> a9b4966461f58fdaf301c4ec7165a40d7152cf92
     const { type, payload } = action;
 
     switch (type) {

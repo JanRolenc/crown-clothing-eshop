@@ -11,7 +11,11 @@ import React from "react";
 import { BrowserRouter } from "react-router-dom";
 import App from "./App";
 // import { UserProvider } from "./contexts/user.context";//rusime po zavedeni redux
+<<<<<<< HEAD
 // import { CategoriesProvider } from "./contexts/categories.context";//rusime po zavedeni redux
+=======
+import { CategoriesProvider } from "./contexts/categories.context";
+>>>>>>> a9b4966461f58fdaf301c4ec7165a40d7152cf92
 import { CartProvider } from "./contexts/cart.context";
 
 import { Provider } from 'react-redux'
@@ -28,11 +32,19 @@ root.render(
     <Provider store={store}>
       <BrowserRouter>
         {/* <UserProvider> */}
+<<<<<<< HEAD
         {/* <CategoriesProvider> */}
         <CartProvider>
           <App />
         </CartProvider>
         {/* </CategoriesProvider> */}
+=======
+        <CategoriesProvider>
+          <CartProvider>
+            <App />
+          </CartProvider>
+        </CategoriesProvider>
+>>>>>>> a9b4966461f58fdaf301c4ec7165a40d7152cf92
         {/* </UserProvider> */}
       </BrowserRouter>
     </Provider>
