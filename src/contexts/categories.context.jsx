@@ -18,7 +18,7 @@ export const CategoriesProvider = ({ children }) => {
   useEffect(() => {
     addCollectionAndDocuments("categories", SHOP_DATA);
   }, []);
-
+  //po zavedeni redux toto prenasime do komp Shop
   useEffect(() => {
     const getCategoriesMap = async () => {
       const categoryMap = await getCategoriesAndDocuments();
